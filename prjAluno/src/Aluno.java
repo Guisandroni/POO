@@ -1,77 +1,111 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author 0030482121040
- */
 public class Aluno {
-    
-    
-    private int RA;
-    private double NtPrv1 , NtPrv2, NtTrab1, NtTrab2;
-    
-    public void  setRa (int r){
-        RA = r;
+
+    private int ra;
+    private String nome;
+    private double notaProva1;
+    private double notaProva2;
+    private double notaTrabalho1;
+    private double notaTrabalho2;
+
+    private static final double PESO_PROVAS = 0.75;
+    private static final double PESO_TRABALHOS = 0.25;
+    private static final double NOTA_MINIMA = 0.0;
+    private static final double NOTA_MAXIMA = 10.0;
+
+    public Aluno() {
     }
-    
-    public int getRa( ){
-        return (RA);
+
+    public Aluno(int ra, String nome) {
+        this.ra = ra;
+        this.nome = nome;
     }
-    
-    public void setNtPrv1 (double P1){
-        NtPrv1 = P1;
+
+    public int getRa() {
+        return ra;
     }
-    
-    public double getNtPrv1(){
-        return (NtPrv1);
+
+    public void setRa(int ra) {
+        this.ra = ra;
     }
-    
-    
-    public void setNtPrv2 (double P2){
-        NtPrv1 = P2;
+
+    public String getNome() {
+        return nome;
     }
-    
-    public double getNtPrv2(){
-        return (NtPrv2);
+
+    public void setNome(String nome) {
+        this.nome = nome;
     }
-    
-    
-    
-    public void setNtTrab1 (double T1){
-            NtTrab1 = T1;
+
+    public double getNotaProva1() {
+        return notaProva1;
     }
-    
-    public double getNtTrab1(){
-        return (NtTrab1);
+
+    public void setNotaProva1(double nota) {
+        this.notaProva1 = validarNota(nota);
     }
-    
-     
-    public void setNtTrab2 (double T2){
-            NtTrab2 = T2;
+
+    public double getNotaProva2() {
+        return notaProva2;
     }
-    
-    public double getNtTrab2(){
-        return (NtTrab2);
+
+    public void setNotaProva2(double nota) {
+        this.notaProva2 = validarNota(nota);
     }
-    
-    public double calcMediaProva(){
-        return (0.75 * (NtPrv1 + 2 * NtPrv2 ) / 3 );
+
+    public double getNotaTrabalho1() {
+        return notaTrabalho1;
     }
-    
-    public double calcMediaTrab(){
-        return (0.25 * ( NtTrab1 + NtTrab2) / 2);
-        
+
+    public void setNotaTrabalho1(double nota) {
+        this.notaTrabalho1 = validarNota(nota);
     }
-    
-    
-    public double calcMediaFinal(){
-        return( calcMediaProva() + calcMediaTrab());
-        
-        
+
+    public double getNotaTrabalho2() {
+        return notaTrabalho2;
     }
-    
+
+    public void setNotaTrabalho2(double nota) {
+        this.notaTrabalho2 = validarNota(nota);
+    }
+
+    private double validarNota(double nota) {
+        if (nota < NOTA_MINIMA) {
+            return NOTA_MINIMA;
+        }
+        if (nota > NOTA_MAXIMA) {
+            return NOTA_MAXIMA;
+        }
+        return nota;
+    }
+
+    public double calcularMediaProvas() {
+        return PESO_PROVAS * (notaProva1 + 2 * notaProva2) / 3;
+    }
+
+    public double calcularMediaTrabalhos() {
+        return PESO_TRABALHOS * (notaTrabalho1 + notaTrabalho2) / 2;
+    }
+
+    public double calcularMediaFinal() {
+        return calcularMediaProvas() + calcularMediaTrabalhos();
+    }
+
+    public String getSituacao() {
+        double media = calcularMediaFinal();
+        if (media >= 6.0) {
+            return "Aprovado";
+        } else if (media >= 4.0) {
+            return "Exame";
+        } else {
+            return "Reprovado";
+        }
+    }
+
+    @Override
+    public String toString() {
+        return String.format(
+            "Aluno [RA: %d, Nome: %s, Média Final: %.2f, Situação: %s]",
+            ra, nome, calcularMediaFinal(), getSituacao()
+        );
+    }
 }

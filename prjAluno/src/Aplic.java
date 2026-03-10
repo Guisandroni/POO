@@ -1,108 +1,98 @@
-
 import java.util.Scanner;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/**
- *
- * @author 0030482121040
- */
 public class Aplic {
 
-    /**
-     * @param args the command line arguments
-     */
+    private static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        // TODO code application logic here
-        
-       Aluno objAluno = new Aluno ();
-       
-       int Ra, option = 0;
-       
-       double NtPrv1 , NtPrv2, NtTrab1, NtTrab2;
-       
-      Scanner entrada = new Scanner (System.in);
-       
-       Scanner entradaRa = new Scanner (System.in);
-       
-       Scanner entradaNtPrv1 = new Scanner (System.in);
-       
-       Scanner entradaNtPrv2 = new Scanner (System.in);
-      
-       Scanner entradaNtTrab1 = new Scanner (System.in);
+        Aluno aluno = cadastrarAluno();
+        exibirMenu(aluno);
+        scanner.close();
+    }
 
-       Scanner entradaNtTrab2 = new Scanner (System.in);
+    private static Aluno cadastrarAluno() {
+        Aluno aluno = new Aluno();
 
-       int i = 0;
-               
-           
-        System.out.print("Digite o seu RA: ");
-        Ra = entradaRa.nextInt();
-        
-        System.out.print("Digite a Nota da Primeira Prova: ");
-        NtPrv1 = entradaNtPrv1.nextDouble();
-        
-        
-        System.out.print("Digite a Nota da Segunda Prova: ");
-        NtPrv2 = entradaNtPrv2.nextDouble();
-        
-        System.out.print("Digite a Nota do Primeiro Trabalho: ");
-        NtTrab1 = entradaNtTrab1.nextDouble(); 
-        
-        System.out.print("Digite a Nota do Segundo Trabalho: ");
-        NtTrab2 = entradaNtTrab2.nextDouble();
-        
-        // fazer a passagem dos dados para o objAluno
-        
-        
-        
-            do {
-       
-           System.out.println("1 - Exibir Nota dos Provas/Trabalhos");
-           System.out.println("2 - Exibir a Media dos Trabalhos/Prova");
-           System.out.println("3 - Exibir  a Media final");
-           System.out.println("4 - Sair");
-           
-       
-          
-              System.out.println("O numero do RA Fornecido é : " + objAluno.getRa());
-              System.out.println("A Nota da Prova 1 é : " + objAluno.getNtPrv1());
-              System.out.println("A Nota da Prova 2 é : " + objAluno.getNtPrv2());
- 
-               System.out.println("A Nota do Trabalho 1 é : " + objAluno.getNtTrab1());
-               System.out.println("A Nota do Trabalho 2 é : " + objAluno.getNtTrab2());
+        System.out.print("Digite o RA: ");
+        aluno.setRa(scanner.nextInt());
+        scanner.nextLine();
 
-           option = entrada.nextInt();
-           
-           switch (option) {
-               case 1 :  System.out.println("A Media das Provas é: " + objAluno.calcMediaProva());
-                        break;
-               case 2 :  System.out.println("A Media dos Trabalhos é: " + objAluno.calcMediaTrab());
-                        break;
-           
-           
-               case 3 : System.out.println("A Media final é :  " + objAluno.calcMediaFinal());
-                        break;
-           
-           
-           
-               case 4 : System.out.println("Saindo do programa");
-                        break;
-           }
-            
-            
-        } while (option < 4);
-         
-           
+        System.out.print("Digite o nome: ");
+        aluno.setNome(scanner.nextLine());
+
+        System.out.print("Digite a nota da primeira prova: ");
+        aluno.setNotaProva1(scanner.nextDouble());
+
+        System.out.print("Digite a nota da segunda prova: ");
+        aluno.setNotaProva2(scanner.nextDouble());
+
+        System.out.print("Digite a nota do primeiro trabalho: ");
+        aluno.setNotaTrabalho1(scanner.nextDouble());
+
+        System.out.print("Digite a nota do segundo trabalho: ");
+        aluno.setNotaTrabalho2(scanner.nextDouble());
+
+        System.out.println("\nAluno cadastrado com sucesso!\n");
+        return aluno;
+    }
+
+    private static void exibirMenu(Aluno aluno) {
+        int opcao;
+
+        do {
+            System.out.println("========== MENU ==========");
+            System.out.println("1 - Exibir notas");
+            System.out.println("2 - Exibir média das provas");
+            System.out.println("3 - Exibir média dos trabalhos");
+            System.out.println("4 - Exibir média final e situação");
+            System.out.println("5 - Exibir dados completos");
+            System.out.println("0 - Sair");
+            System.out.println("==========================");
+            System.out.print("Escolha uma opção: ");
+
+            opcao = scanner.nextInt();
+            System.out.println();
+
+            processarOpcao(opcao, aluno);
+
+        } while (opcao != 0);
+    }
+
+    private static void processarOpcao(int opcao, Aluno aluno) {
+        switch (opcao) {
+            case 1:
+                exibirNotas(aluno);
+                break;
+            case 2:
+                System.out.printf("Média das provas: %.2f%n%n", aluno.calcularMediaProvas());
+                break;
+            case 3:
+                System.out.printf("Média dos trabalhos: %.2f%n%n", aluno.calcularMediaTrabalhos());
+                break;
+            case 4:
+                System.out.printf("Média final: %.2f%n", aluno.calcularMediaFinal());
+                System.out.printf("Situação: %s%n%n", aluno.getSituacao());
+                break;
+            case 5:
+                System.out.println(aluno);
+                System.out.println();
+                break;
+            case 0:
+                System.out.println("Encerrando programa...");
+                break;
+            default:
+                System.out.println("Opção inválida!\n");
         }
-}
-        
-       
-       
-    
-    
+    }
 
+    private static void exibirNotas(Aluno aluno) {
+        System.out.println("----- NOTAS -----");
+        System.out.printf("RA: %d%n", aluno.getRa());
+        System.out.printf("Nome: %s%n", aluno.getNome());
+        System.out.printf("Prova 1: %.2f%n", aluno.getNotaProva1());
+        System.out.printf("Prova 2: %.2f%n", aluno.getNotaProva2());
+        System.out.printf("Trabalho 1: %.2f%n", aluno.getNotaTrabalho1());
+        System.out.printf("Trabalho 2: %.2f%n", aluno.getNotaTrabalho2());
+        System.out.println("-----------------\n");
+    }
+}
